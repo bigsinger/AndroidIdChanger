@@ -19,3 +19,9 @@
 - Enable module in xposed framework.
 - Open app and enter new values.
 - Reboot.
+
+### screenshot
+
+![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/1.png)
+
+![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/2.png)
