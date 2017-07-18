@@ -1,17 +1,17 @@
 # AndroidIdChanger
 
 
-- ²é¿´²¢ĞŞ¸Ä°²×¿ÊÖ»úÉè±¸ĞÅÏ¢£º
-- IMEI¡¢AndroidID¡¢Wifi Mac¡¢SerialNum¡¢Wifi SSID¡¢ÊÖ»úºÅ¡¢Bluetooth Mac¡¢Google Ad Id¡¢Wifi BSSID¡¢IMSI¡¢Sim¿¨×´Ì¬¡¢ÔËÓªÉÌĞÅÏ¢¡¢»úÆ÷ĞÍºÅ¡¢ÖÆÔìÉÌ¡¢Æ·ÅÆ¡¢ÏµÍ³°æ±¾¡¢CPU_ABI¡¢CPU_ABI2¡¢SDK¡¢BuildID¡¢·Ö±æÂÊ¡¢IPµÈ¡£
+- æŸ¥çœ‹å¹¶ä¿®æ”¹å®‰å“æ‰‹æœºè®¾å¤‡ä¿¡æ¯ï¼š
+IMEIã€AndroidIDã€Wifi Macã€SerialNumã€Wifi SSIDã€æ‰‹æœºå·ã€Bluetooth Macã€Google Ad Idã€Wifi BSSIDã€IMSIã€Simå¡çŠ¶æ€ã€è¿è¥å•†ä¿¡æ¯ã€æœºå™¨å‹å·ã€åˆ¶é€ å•†ã€å“ç‰Œã€ç³»ç»Ÿç‰ˆæœ¬ã€CPU_ABIã€CPU_ABI2ã€SDKã€BuildIDã€åˆ†è¾¨ç‡ã€IPç­‰ã€‚
 
-### Ê¹ÓÃ·½·¨£º
-- °²×°APP£¬ÔËĞĞAPP¼´¿É²é¿´ÊÖ»úĞÅÏ¢£¬¿ÉÒÔËæ»úĞŞ¸ÄĞÅÏ¢
-- °²×°Xposed
-- ÔÚXposed¿ò¼ÜÖĞÆôÓÃ±¾Ä£¿é
-- ÖØÆôÊÖ»ú
+### ä½¿ç”¨æ–¹æ³•ï¼š
+- å®‰è£…APPï¼Œè¿è¡ŒAPPå³å¯æŸ¥çœ‹æ‰‹æœºä¿¡æ¯ï¼Œå¯ä»¥éšæœºä¿®æ”¹ä¿¡æ¯
+- å®‰è£…Xposed
+- åœ¨Xposedæ¡†æ¶ä¸­å¯ç”¨æœ¬æ¨¡å—
+- é‡å¯æ‰‹æœº
 
 
-- View and Change the value of IMEI, Android Id, Serial Number, Wifi Mac Address and service set identifier (SSID) of the current wifi network, Google advertising id, Bluetooth mac address,
+View and Change the value of IMEI, Android Id, Serial Number, Wifi Mac Address and service set identifier (SSID) of the current wifi network, Google advertising id, Bluetooth mac address,
 
 - You can random or manual set these values.
 ### How to use :
