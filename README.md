@@ -25,6 +25,9 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 - Open app and enter new values.
 - Reboot.
 
+## Thanks
+- [lars18th](https://github.com/lars18th)
+
 ## Example Screenshots
 
 ![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/1.png)
