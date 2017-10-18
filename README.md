@@ -25,7 +25,7 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 - Open app and enter new values.
 - Reboot.
 
-## Thanks
+## Thanks（感谢）
 - [lars18th](https://github.com/lars18th)
 
 ## Example Screenshots
