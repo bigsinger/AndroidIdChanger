@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.bigsing.util.Constant;
 import com.bigsing.util.PhoneInfoUtils;
+import com.bigsing.util.PreferencesUtils;
 import com.bigsing.util.XposedLog;
 import com.blankj.utilcode.utils.StringUtils;
 
@@ -29,6 +30,7 @@ public class HookerPhone {
     public static void hook(XC_LoadPackage.LoadPackageParam param) {
         XposedLog.logd("HookerPhone.hook() begin");
         String modValue = null;
+        Constant.HARDCODED = PreferencesUtils.isUseHardcodedValue();
 
         //////////////////////////////////////////////////////////////////////////
         // IMEI
@@ -110,7 +112,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // PhoneNumber
         if (Constant.HARDCODED) {
-            modValue = "13456789012";
+            modValue = "+123456789012";
         } else {
             modValue = PhoneInfoUtils.getValue("PhoneNumber");
         }
@@ -137,7 +139,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // WifiMac
         if (Constant.HARDCODED) {
-            modValue = "00:00:00:00:00:00";
+            modValue = "03:33:00:00:00:33";
         } else {
             modValue = PhoneInfoUtils.getValue("WifiMac");
         }
@@ -164,7 +166,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // BluetoothMac
         if (Constant.HARDCODED) {
-            modValue = "00:00:00:00:00:00";
+            modValue = "04:44:00:00:00:44";
         } else {
             modValue = PhoneInfoUtils.getValue("BluetoothMac");
         }
@@ -183,7 +185,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // Wifissid
         if (Constant.HARDCODED) {
-            modValue = "00:00:00:00:00:00";
+            modValue = "05:55:00:00:00:55";
         } else {
             modValue = PhoneInfoUtils.getValue("Wifissid");
         }
@@ -209,7 +211,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // WifiBssid
         if (Constant.HARDCODED) {
-            modValue = "00:00:00:00:00:00";
+            modValue = "06:66:00:00:00:66";
         } else {
             modValue = PhoneInfoUtils.getValue("WifiBssid");
         }
@@ -235,7 +237,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // SubscriberId
         if (Constant.HARDCODED) {
-            modValue = "";
+            modValue = "aabbccddeeff0011";
         } else {
             modValue = PhoneInfoUtils.getValue("SubscriberId");
         }
@@ -261,7 +263,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // SimOperator
         if (Constant.HARDCODED) {
-            modValue = "";
+            modValue = "54321";
         } else {
             modValue = PhoneInfoUtils.getValue("SimOperator");
         }
@@ -287,7 +289,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // SimOperatorName
         if (Constant.HARDCODED) {
-            modValue = "";
+            modValue = "freeOperator";
         } else {
             modValue = PhoneInfoUtils.getValue("SimOperatorName");
         }
@@ -313,7 +315,7 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // SimCountryIso
         if (Constant.HARDCODED) {
-            modValue = "";
+            modValue = "us";
         } else {
             modValue = PhoneInfoUtils.getValue("SimCountryIso");
         }
