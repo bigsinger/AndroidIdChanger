@@ -7,11 +7,13 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
+import com.bigsing.changer.PhoneValue;
 import com.bigsing.util.Constant;
 import com.bigsing.util.PhoneInfoUtils;
 import com.bigsing.util.PreferencesUtils;
 import com.bigsing.util.XposedLog;
-import com.blankj.utilcode.utils.StringUtils;
+
+import java.util.LinkedHashMap;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -26,19 +28,44 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
  */
 
 public class HookerPhone {
+    private static LinkedHashMap<String, String> mHardcodedPhoneInfo = null;
+
+    public static LinkedHashMap<String, String> getPhoneInfo() {
+        if (mHardcodedPhoneInfo == null) {
+            initHardcodedPhoneInfo();
+        }
+        return mHardcodedPhoneInfo;
+    }
+
+    private static void initHardcodedPhoneInfo() {
+        if (mHardcodedPhoneInfo == null) {
+            PhoneValue phoneValue = new PhoneValue();
+            mHardcodedPhoneInfo = phoneValue.getHardcodedPhoneInfo(null);
+        }
+    }
+
+    private static String getHookValue(String key) {
+        String modValue = null;
+        if (Constant.HARDCODED) {
+            modValue = mHardcodedPhoneInfo.get(key);
+        } else {
+            modValue = PhoneInfoUtils.getValue(key);
+        }
+
+        return modValue;
+    }
 
     public static void hook(XC_LoadPackage.LoadPackageParam param) {
         XposedLog.logd("HookerPhone.hook() begin");
         String modValue = null;
-        Constant.HARDCODED = PreferencesUtils.isUseHardcodedValue();
+        Constant.HARDCODED = PreferencesUtils.isUseHardcodedValueOnXposed();
+        if (Constant.HARDCODED) {
+            initHardcodedPhoneInfo();
+        }
 
         //////////////////////////////////////////////////////////////////////////
         // IMEI
-        if (Constant.HARDCODED) {
-            modValue = "1234567890123456";
-        } else {
-            modValue = PhoneInfoUtils.getValue("IMEI");
-        }
+        modValue = getHookValue("IMEI");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook IMEI, it's  null");
         } else {
@@ -77,7 +104,7 @@ public class HookerPhone {
                             param.setResult(hookValue);
                         }
                     });
-                }else if (Build.VERSION.SDK_INT >= 23) { //23 android.os.Build.VERSION_CODES.M
+                } else if (Build.VERSION.SDK_INT >= 23) { //23 android.os.Build.VERSION_CODES.M
                     findAndHookMethod("android.telephony.TelephonyManager", param.classLoader, "getDeviceId", new XC_MethodHook() {
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             super.afterHookedMethod(param);
@@ -103,19 +130,16 @@ public class HookerPhone {
                         }
                     });
                 }
+                XposedLog.logd("HookerPhone.hook(): hooked IMEI with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking IMEI");
+                XposedLog.logd("HookerPhone.hook(): error hooking IMEI");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // PhoneNumber
-        if (Constant.HARDCODED) {
-            modValue = "+123456789012";
-        } else {
-            modValue = PhoneInfoUtils.getValue("PhoneNumber");
-        }
+        modValue = getHookValue("PhoneNumber");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook PhoneNumber, it's  null");
         } else {
@@ -129,8 +153,9 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked PhoneNumber with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking PhoneNumber");
+                XposedLog.logd("HookerPhone.hook(): error hooking PhoneNumber");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -138,11 +163,7 @@ public class HookerPhone {
 
         //////////////////////////////////////////////////////////////////////////
         // WifiMac
-        if (Constant.HARDCODED) {
-            modValue = "03:33:00:00:00:33";
-        } else {
-            modValue = PhoneInfoUtils.getValue("WifiMac");
-        }
+        modValue = getHookValue("WifiMac");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook WifiMac, it's  null");
         } else {
@@ -156,8 +177,9 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked WifiMac with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking WifiMac");
+                XposedLog.logd("HookerPhone.hook(): error hooking WifiMac");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -165,30 +187,23 @@ public class HookerPhone {
 
         //////////////////////////////////////////////////////////////////////////
         // BluetoothMac
-        if (Constant.HARDCODED) {
-            modValue = "04:44:00:00:00:44";
-        } else {
-            modValue = PhoneInfoUtils.getValue("BluetoothMac");
-        }
+        modValue = getHookValue("BluetoothMac");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook BluetoothMac, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 findAndHookMethod("android.bluetooth.BluetoothAdapter", param.classLoader, "getAddress", new Object[]{XC_MethodReplacement.returnConstant(hookValue)});
+                XposedLog.logd("HookerPhone.hook(): hooked BluetoothMac with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking BluetoothMac");
+                XposedLog.logd("HookerPhone.hook(): error hooking BluetoothMac");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // Wifissid
-        if (Constant.HARDCODED) {
-            modValue = "05:55:00:00:00:55";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Wifissid");
-        }
+        modValue = getHookValue("Wifissid");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook Wifissid, it's  null");
         } else {
@@ -202,19 +217,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked Wifissid with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking Wifissid");
+                XposedLog.logd("HookerPhone.hook(): error hooking Wifissid");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // WifiBssid
-        if (Constant.HARDCODED) {
-            modValue = "06:66:00:00:00:66";
-        } else {
-            modValue = PhoneInfoUtils.getValue("WifiBssid");
-        }
+        modValue = getHookValue("WifiBssid");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook WifiBssid, it's  null");
         } else {
@@ -228,19 +240,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked WifiBssid with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking WifiBssid");
+                XposedLog.logd("HookerPhone.hook(): error hooking WifiBssid");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SubscriberId
-        if (Constant.HARDCODED) {
-            modValue = "aabbccddeeff0011";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SubscriberId");
-        }
+        modValue = getHookValue("SubscriberId");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SubscriberId, it's  null");
         } else {
@@ -254,19 +263,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked SubscriberId with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SubscriberId");
+                XposedLog.logd("HookerPhone.hook(): error hooking SubscriberId");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SimOperator
-        if (Constant.HARDCODED) {
-            modValue = "54321";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SimOperator");
-        }
+        modValue = getHookValue("SimOperator");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SimOperator, it's  null");
         } else {
@@ -280,19 +286,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked SimOperator with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SimOperator");
+                XposedLog.logd("HookerPhone.hook(): error hooking SimOperator");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SimOperatorName
-        if (Constant.HARDCODED) {
-            modValue = "freeOperator";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SimOperatorName");
-        }
+        modValue = getHookValue("SimOperatorName");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SimOperatorName, it's  null");
         } else {
@@ -306,19 +309,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked SimOperatorName with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SimOperatorName");
+                XposedLog.logd("HookerPhone.hook(): error hooking SimOperatorName");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SimCountryIso
-        if (Constant.HARDCODED) {
-            modValue = "us";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SimCountryIso");
-        }
+        modValue = getHookValue("SimCountryIso");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SimCountryIso, it's  null");
         } else {
@@ -332,19 +332,16 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked SimCountryIso with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SimCountryIso");
+                XposedLog.logd("HookerPhone.hook(): error hooking SimCountryIso");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SimState
-        if (Constant.HARDCODED) {
-            modValue = "1";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SimState");
-        }
+        modValue = getHookValue("SimState");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SimState, it's  null");
         } else {
@@ -363,25 +360,22 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked SimState with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SimState");
+                XposedLog.logd("HookerPhone.hook(): error hooking SimState");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // AndroidId
-        if (Constant.HARDCODED) {
-            modValue = "b89ab8a123abcd7b";
-        } else {
-            modValue = PhoneInfoUtils.getValue("AndroidId");
-        }
+        modValue = getHookValue("AndroidId");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook AndroidId, it's  null");
         } else {
             final String hookValue = modValue;
             try {
-                findAndHookMethod(Settings.Secure.class.getName(), param.classLoader, "getString", new Object[]{ContentResolver.class.getName(), String.class.getName(), new XC_MethodHook()  {
+                findAndHookMethod(Settings.Secure.class.getName(), param.classLoader, "getString", new Object[]{ContentResolver.class.getName(), String.class.getName(), new XC_MethodHook() {
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam hookParam)
                             throws Throwable {
                         if (hookParam.args[1].equals("android_id"))
@@ -390,8 +384,9 @@ public class HookerPhone {
                     }
                 }
                 });
+                XposedLog.logd("HookerPhone.hook(): hooked AndroidId with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking AndroidId");
+                XposedLog.logd("HookerPhone.hook(): error hooking AndroidId");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -399,11 +394,7 @@ public class HookerPhone {
 
         //////////////////////////////////////////////////////////////////////////
         // SDK
-        if (Constant.HARDCODED) {
-            modValue = "19";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SDK");
-        }
+        modValue = getHookValue("SDK");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SDK, it's  null");
         } else {
@@ -415,27 +406,25 @@ public class HookerPhone {
             }
             try {
                 XposedHelpers.setStaticObjectField(Build.VERSION.class, "SDK_INT", sdkInt);
+                XposedLog.logd("HookerPhone.hook(): hooked SDK_INT with " + sdkInt);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SDK");
+                XposedLog.logd("HookerPhone.hook(): error hooking SDK");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // Release
-        if (Constant.HARDCODED) {
-            modValue = "4.4.4";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Release");
-        }
+        modValue = getHookValue("Release");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook RELEASE, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.VERSION.class, "RELEASE", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked RELEASE with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking RELEASE");
+                XposedLog.logd("HookerPhone.hook(): error hooking RELEASE");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -443,171 +432,144 @@ public class HookerPhone {
 
         //////////////////////////////////////////////////////////////////////////
         // INCREMENTAL
-        if (Constant.HARDCODED) {
-            modValue = "m35x.Flyme_OS_3.7.3.20140909113158";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Incremental");
-        }
+        modValue = getHookValue("Incremental");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook INCREMENTAL, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.VERSION.class, "INCREMENTAL", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked INCREMENTAL with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking INCREMENTAL");
+                XposedLog.logd("HookerPhone.hook(): error hooking INCREMENTAL");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // SERIAL
-        if (Constant.HARDCODED) {
-            modValue = "897EEPMFJE0P";
-        } else {
-            modValue = PhoneInfoUtils.getValue("SerialNo");
-        }
+        modValue = getHookValue("SerialNo");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook SERIAL, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "SERIAL", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked SERIAL with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking SERIAL");
+                XposedLog.logd("HookerPhone.hook(): error hooking SERIAL");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // MODEL
-        if (Constant.HARDCODED) {
-            modValue = "M351";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Model");
-        }
+        modValue = getHookValue("Model");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook MODEL, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "MODEL", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked MODEL with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking MODEL");
+                XposedLog.logd("HookerPhone.hook(): error hooking MODEL");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // MANUFACTURER
-        if (Constant.HARDCODED) {
-            modValue = "Meizu";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Manufacturer");
-        }
+        modValue = getHookValue("Manufacturer");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook MODEL, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "MANUFACTURER", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked MANUFACTURER with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking MANUFACTURER");
+                XposedLog.logd("HookerPhone.hook(): error hooking MANUFACTURER");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // HARDWARE
-        if (Constant.HARDCODED) {
-            modValue = "mx3";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Hardware");
-        }
+        modValue = getHookValue("Hardware");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook HARDWARE, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "HARDWARE", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked HARDWARE with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking HARDWARE");
+                XposedLog.logd("HookerPhone.hook(): error hooking HARDWARE");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // BRAND
-        if (Constant.HARDCODED) {
-            modValue = "Meizu";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Brand");
-        }
+        modValue = getHookValue("Brand");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook BRAND, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "BRAND", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked BRAND with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking BRAND");
+                XposedLog.logd("HookerPhone.hook(): error hooking BRAND");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // BuildID
-        if (Constant.HARDCODED) {
-            modValue = "KTU84P";
-        } else {
-            modValue = PhoneInfoUtils.getValue("BuildID");
-        }
+        modValue = getHookValue("BuildID");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook ID, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "ID", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked ID with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking ID");
+                XposedLog.logd("HookerPhone.hook(): error hooking ID");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // USER
-        if (Constant.HARDCODED) {
-            modValue = "flyme";
-        } else {
-            modValue = PhoneInfoUtils.getValue("USER");
-        }
+        modValue = getHookValue("USER");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook USER, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "USER", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked USER with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking USER");
+                XposedLog.logd("HookerPhone.hook(): error hooking USER");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // CPU_ABI
-        if (Constant.HARDCODED) {
-            modValue = "armeabi-v7a";
-        } else {
-            modValue = PhoneInfoUtils.getValue("CPU_ABI");
-        }
+        modValue = getHookValue("CPU_ABI");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook CPU_ABI, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "CPU_ABI", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked CPU_ABI with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking CPU_ABI");
+                XposedLog.logd("HookerPhone.hook(): error hooking CPU_ABI");
             }
         }
         //////////////////////////////////////////////////////////////////////////
@@ -615,137 +577,115 @@ public class HookerPhone {
 
         //////////////////////////////////////////////////////////////////////////
         // CPU_ABI2
-        if (Constant.HARDCODED) {
-            modValue = "armeabi";
-        } else {
-            modValue = PhoneInfoUtils.getValue("CPU_ABI2");
-        }
+        modValue = getHookValue("CPU_ABI2");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook CPU_ABI2, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "CPU_ABI2", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked CPU_ABI2 with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking CPU_ABI2");
+                XposedLog.logd("HookerPhone.hook(): error hooking CPU_ABI2");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // BOARD
-        if (Constant.HARDCODED) {
-            modValue = "mx3";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Board");
-        }
+        modValue = getHookValue("Board");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook BOARD, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "BOARD", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked BOARD with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking BOARD");
+                XposedLog.logd("HookerPhone.hook(): error hooking BOARD");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // DEVICE
-        if (Constant.HARDCODED) {
-            modValue = "mx3";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Device");
-        }
+        modValue = getHookValue("Device");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook DEVICE, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "DEVICE", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked DEVICE with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking DEVICE");
+                XposedLog.logd("HookerPhone.hook(): error hooking DEVICE");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // PRODUCT
-        if (Constant.HARDCODED) {
-            modValue = "meizu_mx3";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Product");
-        }
+        modValue = getHookValue("Product");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook PRODUCT, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "PRODUCT", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked PRODUCT with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking PRODUCT");
+                XposedLog.logd("HookerPhone.hook(): error hooking PRODUCT");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // HOST
-        if (Constant.HARDCODED) {
-            modValue = "mz-builder-1";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Host");
-        }
+        modValue = getHookValue("Host");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook HOST, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "HOST", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked HOST with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking HOST");
+                XposedLog.logd("HookerPhone.hook(): error hooking HOST");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // DISPLAY
-        if (Constant.HARDCODED) {
-            modValue = "Flyme OS 3.7.3A";
-        } else {
-            modValue = PhoneInfoUtils.getValue("Display");
-        }
+        modValue = getHookValue("Display");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook DISPLAY, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "DISPLAY", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked DISPLAY with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking DISPLAY");
+                XposedLog.logd("HookerPhone.hook(): error hooking DISPLAY");
             }
         }
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
         // FINGERPRINT
-        if (Constant.HARDCODED) {
-            modValue = "Meizu/meizu_mx3/mx3:4.4.4/KTU84P/m35x.Flyme_OS_3.7.3.20140909113158:user/release-keys";
-        } else {
-            modValue = PhoneInfoUtils.getValue("FingerPrint");
-        }
+        modValue = getHookValue("FingerPrint");
         if (TextUtils.isEmpty(modValue)) {
             XposedLog.logd("HookerPhone.hook(): no hook FINGERPRINT, it's  null");
         } else {
             final String hookValue = modValue;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "FINGERPRINT", hookValue);
+                XposedLog.logd("HookerPhone.hook(): hooked FINGERPRINT with " + hookValue);
             } catch (Exception e) {
-                XposedLog.logd("HookerPhone.hook() : error hooking FINGERPRINT");
+                XposedLog.logd("HookerPhone.hook(): error hooking FINGERPRINT");
             }
         }
         //////////////////////////////////////////////////////////////////////////
-
         XposedLog.logd(Constant.TAG + ": HookerPhone.hook() end");
     }
 
