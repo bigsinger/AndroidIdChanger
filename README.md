@@ -1,3 +1,5 @@
+[网易招聘内部职位推荐（定期更新）](./doc/NeteaseJobs.md)
+
 # AndroidIdChanger
 
 ## 中文 (Chinese):
