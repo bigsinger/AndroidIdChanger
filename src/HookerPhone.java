@@ -168,6 +168,11 @@ public class HookerPhone {
             XposedLog.logd("no hook WifiMac, it's  null");
         } else {
             final String hookValue = modValue;
+
+            ///////////////////////////
+            //hook getMacAddress anyway
+            ///////////////////////////
+            //ref: https://developer.android.com/reference/android/net/wifi/WifiInfo.html#getMacAddress()
             try {
                 findAndHookMethod(WifiInfo.class.getName(), param.classLoader, "getMacAddress", new Object[]{new XC_MethodHook() {
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam hookParam)
@@ -181,6 +186,25 @@ public class HookerPhone {
             } catch (Exception e) {
                 XposedLog.loge("error hooking WifiMac");
             }
+            ///////////////////////////
+
+            if (Build.VERSION.SDK_INT >= 24) {
+                //ref: https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#getWifiMacAddress(android.content.ComponentName)
+                try {
+                    findAndHookMethod("android.app.admin.DevicePolicyManager", param.classLoader, "getWifiMacAddress", new Object[]{new XC_MethodHook() {
+                        protected void afterHookedMethod(XC_MethodHook.MethodHookParam hookParam)
+                                throws Throwable {
+                            hookParam.setResult(hookValue);
+                            super.afterHookedMethod(hookParam);
+                        }
+                    }
+                    });
+                    XposedLog.logd("hooked WifiMac with " + hookValue);
+                } catch (Exception e) {
+                    XposedLog.loge("error hooking WifiMac");
+                }
+            }
+
         }
         //////////////////////////////////////////////////////////////////////////
 
@@ -559,6 +583,55 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
+        // BOOTLOADER
+        modValue = getHookValue("BootLoader");
+        if (TextUtils.isEmpty(modValue)) {
+            XposedLog.logd("no hook Build.BOOTLOADER, it's  null");
+        } else {
+            final String hookValue = modValue;
+            try {
+                XposedHelpers.setStaticObjectField(Build.class, "BOOTLOADER", hookValue);
+                XposedLog.logd("hooked Build.BOOTLOADER with " + hookValue);
+            } catch (Exception e) {
+                XposedLog.loge("error hooking Build.BOOTLOADER");
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////
+        // RADIO
+        modValue = getHookValue("RadioVersion");
+        if (TextUtils.isEmpty(modValue)) {
+            XposedLog.logd("no hook Build.RADIO, it's  null");
+        } else {
+            final String hookValue = modValue;
+            if (Build.VERSION.SDK_INT < 14) {
+                try {
+                    XposedHelpers.setStaticObjectField(Build.class, "RADIO", hookValue);
+                    XposedLog.logd("hooked Build.RADIO with " + hookValue);
+                } catch (Exception e) {
+                    XposedLog.loge("error hooking Build.RADIO");
+                }
+            } else {  //Build.VERSION.SDK_INT >= 14
+                try {
+                    findAndHookMethod(Build.class.getName(), param.classLoader, "getRadioVersion", new Object[]{new XC_MethodHook() {
+                        protected void afterHookedMethod(XC_MethodHook.MethodHookParam hookParam)
+                                throws Throwable {
+                            hookParam.setResult(hookValue);
+                            super.afterHookedMethod(hookParam);
+                        }
+                    }
+                    });
+                    XposedLog.logd("hooked Build.RADIO with " + hookValue);
+                } catch (Exception e) {
+                    XposedLog.loge("error hooking Build.RADIO");
+                }
+            }
+
+        }
+        //////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////
         // TAGS
         modValue = getHookValue("TAGS");
         if (TextUtils.isEmpty(modValue)) {
@@ -767,7 +840,7 @@ public class HookerPhone {
             }
         }
         //////////////////////////////////////////////////////////////////////////
-        XposedLog.log("hook end\n");  //绝对输出
+        XposedLog.log("hook end\r\n");  //绝对输出
     }
 
 }
