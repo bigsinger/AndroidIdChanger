@@ -56,7 +56,6 @@ public class HookerPhone {
     }
 
     public static void hook(XC_LoadPackage.LoadPackageParam param) {
-        XposedLog.log("hook begin");    //绝对输出
         String modValue = null;
         Constant.HARDCODED = PreferencesUtils.isUseHardcodedValueOnXposed();
         if (Constant.HARDCODED) {
@@ -650,10 +649,16 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
         // TIME
         modValue = getHookValue("TIME");
-        if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.TIME, it's  null");
+        long buildTime = 0;
+        try {
+            buildTime = Integer.parseInt(modValue);
+        } catch (Exception e) {
+            buildTime = 0;
+        }
+        if (buildTime == 0) {
+            XposedLog.logd("no hook Build.TIME, it's  null or not a valid long number");
         } else {
-            final String hookValue = modValue;
+            final long hookValue = buildTime;
             try {
                 XposedHelpers.setStaticObjectField(Build.class, "TIME", hookValue);
                 XposedLog.logd("hooked Build.TIME with " + hookValue);
@@ -678,23 +683,6 @@ public class HookerPhone {
             }
         }
         //////////////////////////////////////////////////////////////////////////
-
-        //////////////////////////////////////////////////////////////////////////
-        // TIME
-        modValue = getHookValue("TIME");
-        if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook TIME, it's  null");
-        } else {
-            final String hookValue = modValue;
-            try {
-                XposedHelpers.setStaticObjectField(Build.class, "TIME", hookValue);
-                XposedLog.logd("hooked TIME with " + hookValue);
-            } catch (Exception e) {
-                XposedLog.loge("error hooking TIME");
-            }
-        }
-        //////////////////////////////////////////////////////////////////////////
-
 
         //////////////////////////////////////////////////////////////////////////
         // USER
@@ -840,7 +828,6 @@ public class HookerPhone {
             }
         }
         //////////////////////////////////////////////////////////////////////////
-        XposedLog.log("hook end\r\n");  //绝对输出
     }
 
 }
