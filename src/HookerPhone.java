@@ -1,5 +1,6 @@
 package com.bigsing.changer.hook;
 
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.net.wifi.WifiInfo;
 import android.os.Build;
@@ -66,7 +67,7 @@ public class HookerPhone {
         // IMEI
         modValue = getHookValue("IMEI");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook IMEI, it's  null");
+            XposedLog.logd("no hook IMEI, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -140,7 +141,7 @@ public class HookerPhone {
         // PhoneNumber
         modValue = getHookValue("PhoneNumber");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook PhoneNumber, it's  null");
+            XposedLog.logd("no hook PhoneNumber, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -164,7 +165,7 @@ public class HookerPhone {
         // WifiMac
         modValue = getHookValue("WifiMac");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook WifiMac, it's  null");
+            XposedLog.logd("no hook WifiMac, it's null");
         } else {
             final String hookValue = modValue;
 
@@ -190,7 +191,7 @@ public class HookerPhone {
             if (Build.VERSION.SDK_INT >= 24) {
                 //ref: https://developer.android.com/reference/android/app/admin/DevicePolicyManager.html#getWifiMacAddress(android.content.ComponentName)
                 try {
-                    findAndHookMethod("android.app.admin.DevicePolicyManager", param.classLoader, "getWifiMacAddress", new Object[]{new XC_MethodHook() {
+                    findAndHookMethod("android.app.admin.DevicePolicyManager", param.classLoader, "getWifiMacAddress", ComponentName.class, new Object[]{new XC_MethodHook() {
                         protected void afterHookedMethod(XC_MethodHook.MethodHookParam hookParam)
                                 throws Throwable {
                             hookParam.setResult(hookValue);
@@ -212,7 +213,7 @@ public class HookerPhone {
         // BluetoothMac
         modValue = getHookValue("BluetoothMac");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook BluetoothMac, it's  null");
+            XposedLog.logd("no hook BluetoothMac, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -228,7 +229,7 @@ public class HookerPhone {
         // Wifissid
         modValue = getHookValue("Wifissid");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Wifissid, it's  null");
+            XposedLog.logd("no hook Wifissid, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -251,7 +252,7 @@ public class HookerPhone {
         // WifiBssid
         modValue = getHookValue("WifiBssid");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook WifiBssid, it's  null");
+            XposedLog.logd("no hook WifiBssid, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -274,7 +275,7 @@ public class HookerPhone {
         // SubscriberId
         modValue = getHookValue("SubscriberId");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SubscriberId, it's  null");
+            XposedLog.logd("no hook SubscriberId, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -297,7 +298,7 @@ public class HookerPhone {
         // SimOperator
         modValue = getHookValue("SimOperator");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SimOperator, it's  null");
+            XposedLog.logd("no hook SimOperator, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -320,7 +321,7 @@ public class HookerPhone {
         // SimOperatorName
         modValue = getHookValue("SimOperatorName");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SimOperatorName, it's  null");
+            XposedLog.logd("no hook SimOperatorName, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -343,7 +344,7 @@ public class HookerPhone {
         // SimCountryIso
         modValue = getHookValue("SimCountryIso");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SimCountryIso, it's  null");
+            XposedLog.logd("no hook SimCountryIso, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -366,7 +367,7 @@ public class HookerPhone {
         // SimState
         modValue = getHookValue("SimState");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SimState, it's  null");
+            XposedLog.logd("no hook SimState, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -394,7 +395,7 @@ public class HookerPhone {
         // AndroidId
         modValue = getHookValue("AndroidId");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook AndroidId, it's  null");
+            XposedLog.logd("no hook AndroidId, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -419,7 +420,7 @@ public class HookerPhone {
         // SDK
         modValue = getHookValue("SDK");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SDK, it's  null");
+            XposedLog.logd("no hook SDK, it's null");
         } else {
             int sdkInt = 19;
             try {
@@ -440,7 +441,7 @@ public class HookerPhone {
         // Release
         modValue = getHookValue("Release");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook RELEASE, it's  null");
+            XposedLog.logd("no hook RELEASE, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -457,7 +458,7 @@ public class HookerPhone {
         // INCREMENTAL
         modValue = getHookValue("Incremental");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook INCREMENTAL, it's  null");
+            XposedLog.logd("no hook INCREMENTAL, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -473,7 +474,7 @@ public class HookerPhone {
         // Build.VERSION.CODENAME
         modValue = getHookValue("CODENAME");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.VERSION.CODENAME, it's  null");
+            XposedLog.logd("no hook Build.VERSION.CODENAME, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -489,7 +490,7 @@ public class HookerPhone {
         // SERIAL
         modValue = getHookValue("SerialNo");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook SERIAL, it's  null");
+            XposedLog.logd("no hook SERIAL, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -505,7 +506,7 @@ public class HookerPhone {
         // MODEL
         modValue = getHookValue("Model");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook MODEL, it's  null");
+            XposedLog.logd("no hook MODEL, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -521,7 +522,7 @@ public class HookerPhone {
         // MANUFACTURER
         modValue = getHookValue("Manufacturer");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook MODEL, it's  null");
+            XposedLog.logd("no hook MODEL, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -537,7 +538,7 @@ public class HookerPhone {
         // HARDWARE
         modValue = getHookValue("Hardware");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook HARDWARE, it's  null");
+            XposedLog.logd("no hook HARDWARE, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -553,7 +554,7 @@ public class HookerPhone {
         // BRAND
         modValue = getHookValue("Brand");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook BRAND, it's  null");
+            XposedLog.logd("no hook BRAND, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -569,7 +570,7 @@ public class HookerPhone {
         // BuildID
         modValue = getHookValue("BuildID");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.ID, it's  null");
+            XposedLog.logd("no hook Build.ID, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -585,7 +586,7 @@ public class HookerPhone {
         // BOOTLOADER
         modValue = getHookValue("BootLoader");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.BOOTLOADER, it's  null");
+            XposedLog.logd("no hook Build.BOOTLOADER, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -601,7 +602,7 @@ public class HookerPhone {
         // RADIO
         modValue = getHookValue("RadioVersion");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.RADIO, it's  null");
+            XposedLog.logd("no hook Build.RADIO, it's null");
         } else {
             final String hookValue = modValue;
             if (Build.VERSION.SDK_INT < 14) {
@@ -634,7 +635,7 @@ public class HookerPhone {
         // TAGS
         modValue = getHookValue("TAGS");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.TAGS, it's  null");
+            XposedLog.logd("no hook Build.TAGS, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -656,7 +657,7 @@ public class HookerPhone {
             buildTime = 0;
         }
         if (buildTime == 0) {
-            XposedLog.logd("no hook Build.TIME, it's  null or not a valid long number");
+            XposedLog.logd("no hook Build.TIME, it's null or not a valid long number");
         } else {
             final long hookValue = buildTime;
             try {
@@ -672,7 +673,7 @@ public class HookerPhone {
         // TYPE
         modValue = getHookValue("TYPE");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook Build.TYPE, it's  null");
+            XposedLog.logd("no hook Build.TYPE, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -688,7 +689,7 @@ public class HookerPhone {
         // USER
         modValue = getHookValue("USER");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook USER, it's  null");
+            XposedLog.logd("no hook USER, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -704,7 +705,7 @@ public class HookerPhone {
         // CPU_ABI
         modValue = getHookValue("CPU_ABI");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook CPU_ABI, it's  null");
+            XposedLog.logd("no hook CPU_ABI, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -721,7 +722,7 @@ public class HookerPhone {
         // CPU_ABI2
         modValue = getHookValue("CPU_ABI2");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook CPU_ABI2, it's  null");
+            XposedLog.logd("no hook CPU_ABI2, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -737,7 +738,7 @@ public class HookerPhone {
         // BOARD
         modValue = getHookValue("Board");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook BOARD, it's  null");
+            XposedLog.logd("no hook BOARD, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -753,7 +754,7 @@ public class HookerPhone {
         // DEVICE
         modValue = getHookValue("Device");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook DEVICE, it's  null");
+            XposedLog.logd("no hook DEVICE, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -769,7 +770,7 @@ public class HookerPhone {
         // PRODUCT
         modValue = getHookValue("Product");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook PRODUCT, it's  null");
+            XposedLog.logd("no hook PRODUCT, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -782,10 +783,61 @@ public class HookerPhone {
         //////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////
+        //ref https://github.com/redlee90/Hide-USB-Debugging-Mode/blob/master/app/src/main/java/com/redlee90/hideusbdebugging/Tutorial.java#L42
+        // USBDebugMode
+        modValue = getHookValue("USBDebugMode");
+        if (TextUtils.isEmpty(modValue)) {
+            XposedLog.logd("no hook USB Debug Mode, it's null");
+        } else {
+            int nDebugMode = 0;
+            try {
+                nDebugMode = Integer.parseInt(modValue);
+            } catch (Exception e) {
+                nDebugMode = 0;
+            }
+
+            boolean bok = false;
+            final int hookValue = nDebugMode;
+            try {
+                XposedHelpers.findAndHookMethod("android.provider.Settings.Global", param.classLoader, "getInt", ContentResolver.class, String.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        if (param.args[1].equals(Settings.Global.ADB_ENABLED)) {
+                            param.setResult(hookValue);
+                        }
+                    }
+                });
+                bok = true;
+                XposedLog.logd("hide USBDebugging: hook Settings.Global.getInt method");
+            } catch (Exception e) {
+                XposedLog.loge("error hooking USB Debug Mode: Settings.Global.getInt");
+            }
+            try {
+                XposedHelpers.findAndHookMethod("android.provider.Settings.Secure", param.classLoader, "getInt", ContentResolver.class, String.class, int.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        if (param.args[1].equals(Settings.Secure.ADB_ENABLED)) {
+                            param.setResult(hookValue);
+                        }
+                    }
+                });
+                bok = true;
+                XposedLog.logd("hide USBDebugging: hook Settings.Secure.getInt method");
+            } catch (Exception e) {
+                XposedLog.loge("error hooking USB Debug Mode: Settings.Secure.getInt");
+            }
+
+            if (bok) {
+                XposedLog.logd("hooked USB Debug Mode with: " + hookValue);
+            }
+        }
+        //////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////
         // HOST
         modValue = getHookValue("Host");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook HOST, it's  null");
+            XposedLog.logd("no hook HOST, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -801,7 +853,7 @@ public class HookerPhone {
         // DISPLAY
         modValue = getHookValue("Display");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook DISPLAY, it's  null");
+            XposedLog.logd("no hook DISPLAY, it's null");
         } else {
             final String hookValue = modValue;
             try {
@@ -817,7 +869,7 @@ public class HookerPhone {
         // FINGERPRINT
         modValue = getHookValue("FingerPrint");
         if (TextUtils.isEmpty(modValue)) {
-            XposedLog.logd("no hook FINGERPRINT, it's  null");
+            XposedLog.logd("no hook FINGERPRINT, it's null");
         } else {
             final String hookValue = modValue;
             try {
