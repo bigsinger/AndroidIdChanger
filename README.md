@@ -1,4 +1,4 @@
-[网易招聘内部职位推荐（定期更新）](./doc/NeteaseJobs.md)
+[网易招聘内部职位推荐（定期更新）](http://www.zhupite.com/posts/job.html)
 
 # AndroidIdChanger
 ## 1.22
