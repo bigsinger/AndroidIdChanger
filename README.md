@@ -1,9 +1,15 @@
 [网易招聘内部职位推荐（定期更新）](http://www.zhupite.com/posts/nejobs.html)
 
-# AndroidIdChanger
-## 1.22
-- 如果xposed没安装或者没激活，则默认显示原始数值，这样工具作用等于设备信息查看器。
+# AndroidIdChanger（安卓手机设备信息查看/安卓改机工具）
+- 如果Xposed没安装或者没激活，则默认显示原始数值，这样工具作用等于安卓手机设备信息查看工具。
+- 如果安装Xposed并激活该工具，则可以实现改机效果，伪装成不同的手机设备。
+- 一键随机修改设备信息
+- 支持硬编码的设备信息
+- 支持email发送设备信息，主要是方便测试
+- 支持自定义设备信息，在data/data/com.bigsing.changer/shared_prefs/phoneinfo.xml中，可以在电脑中修改次文件，然后覆盖替换掉手机里的这个文件，即刻生效，无须重启手机。
 - Wifi Mac地址获取方式修改，解决Android6.0以上系统获取为02:00:00:00:00:00的问题，且获取多个，以供参考。
+
+如有问题或建议，请在这里留言：[Issues](https://github.com/bigsinger/AndroidIdChanger/issues)，当然我并不一定会有时间修复和解决。
 
 ## 中文 (Chinese):
 
@@ -15,6 +21,7 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 - 安装Xposed
 - 在Xposed框架中启用本模块
 - 重启手机
+- 后面再做的修改一律不需要重启手机
 
 ## English:
 
@@ -29,6 +36,7 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 - Enable module in xposed framework.
 - Open app and enter new values.
 - Reboot.
+- No need to reboot the phone later when random the info.
 
 ## Thanks（感谢）
 - [lars18th](https://github.com/lars18th)
@@ -38,3 +46,12 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 ![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/1.png)
 
 ![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/2.png)
+
+## Donate（捐助）
+
+支付宝（alipay）：
+![支付宝捐助](./screenshot/donate_alipay.jpg)
+
+微信（WeChat）：
+![微信捐助](./screenshot/donate_weixin.jpg)
+
