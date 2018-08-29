@@ -6,7 +6,7 @@
 - 一键随机修改设备信息
 - 支持硬编码的设备信息
 - 支持email发送设备信息，主要是方便测试
-- 支持自定义设备信息，在data/data/com.bigsing.changer/shared_prefs/phoneinfo.xml中，可以在电脑中修改次文件，然后覆盖替换掉手机里的这个文件，即刻生效，无须重启手机。
+- 支持自定义设备信息，在**data/data/com.bigsing.changer/shared_prefs/phoneinfo.xml**中，可以在电脑中修改该文件，然后覆盖替换掉手机里的这个文件，即刻生效，无须重启手机。
 - Wifi Mac地址获取方式修改，解决Android6.0以上系统获取为02:00:00:00:00:00的问题，且获取多个，以供参考。
 
 如有问题或建议，请在这里留言：[Issues](https://github.com/bigsinger/AndroidIdChanger/issues)，当然我并不一定会有时间修复和解决。
