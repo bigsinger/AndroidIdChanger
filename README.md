@@ -47,11 +47,4 @@ IMEI、AndroidID、Wifi Mac、SerialNum、Wifi SSID、手机号、Bluetooth Mac�
 
 ![](https://github.com/bigsinger/AndroidIdChanger/blob/master/screenshot/2.png)
 
-## Donate（捐助）
-
-支付宝（alipay）：
-![支付宝捐助](./screenshot/donate_alipay.jpg)
-
-微信（WeChat）：
-![微信捐助](./screenshot/donate_weixin.jpg)
 
