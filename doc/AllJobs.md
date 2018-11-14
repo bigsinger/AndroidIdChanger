@@ -1,1 +1,1 @@
-<http://www.zhupite.com/posts/job.html>
+<https://www.zhupite.com/tag/#job>
