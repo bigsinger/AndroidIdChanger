@@ -1,1 +1,1 @@
-<http://www.zhupite.com/posts/nejobs.html>
+<https://www.zhupite.com/job/nejobs.html>
