@@ -1,4 +1,4 @@
-[网易招聘内部职位推荐（定期更新）](http://www.zhupite.com/posts/nejobs.html)
+[网易招聘内部职位推荐（定期更新）](https://www.zhupite.com/job/nejobs.html)
 
 # AndroidIdChanger（安卓手机设备信息查看/安卓改机工具）
 - 如果Xposed没安装或者没激活，则默认显示原始数值，这样工具作用等于安卓手机设备信息查看工具。
