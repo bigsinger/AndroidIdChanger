@@ -1,4 +1,4 @@
-# 源码出售，有意者微博私信：https://weibo.com/zhupite
+# 源码出售1.23版，有意者微博私信：https://weibo.com/zhupite
 
 [网易招聘内部职位推荐（定期更新）](https://www.zhupite.com/job/nejobs.html)
 
