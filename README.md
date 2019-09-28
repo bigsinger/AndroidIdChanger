@@ -1,6 +1,9 @@
 # [免责声明](./免责声明.md)
 
 # 源码出售1.23版，有意者微博私信：https://weibo.com/zhupite
+source code for sale couse no time 
+
+E-Mail: pushebp#####163.com
 
 [网易招聘内部职位推荐（定期更新）](https://www.zhupite.com/job/nejobs.html)
 
