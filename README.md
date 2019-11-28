@@ -1,11 +1,14 @@
 # [免责声明](./免责声明.md)
 
 # 源码出售1.23版，有意者微博私信：https://weibo.com/zhupite
-source code for sale couse no time 
+source code for sale couse no time E-Mail: pushebp#####163.com
 
-E-Mail: pushebp#####163.com
-
-[网易招聘内部职位推荐（定期更新）](https://www.zhupite.com/job/nejobs.html)
+- 支持预置fingerprint
+- 支持可扩展fingerprint
+- 支持最新版AndroidStudio编译器
+- 包教会编译、指导
+- 软件架构精良，通俗易懂，维护扩展成本极低
+- 仅仅因为维护和增加fingerprint的工作量较大，作者不再维护。
 
 # AndroidIdChanger（安卓手机设备信息查看/安卓改机工具）LatestVersion:1.24
 - 如果Xposed没安装或者没激活，则默认显示原始数值，这样工具作用等于安卓手机设备信息查看工具。
