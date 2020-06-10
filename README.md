@@ -1,8 +1,5 @@
 # [免责声明](./免责声明.md)
 
-# 源码出售1.23版，有意者微博私信：https://weibo.com/zhupite
-source code for sale couse no time E-Mail: pushebp#####163.com
-
 - 支持预置fingerprint
 - 支持可扩展fingerprint
 - 支持最新版AndroidStudio编译器
